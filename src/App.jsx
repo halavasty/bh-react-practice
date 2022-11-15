@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(5);
+  const [search, setSearch] = useState("");
 
-  const inc = () => {
-    setCount(count + 1);
-  };
-  const dec = () => {
-    setCount(count - 1);
-  };
+  function myFunc(e) {
+    setSearch(e.target.value);
+  }
 
   return (
     <div className="App">
-      <h2>{count}</h2>
-      <button onClick={inc}>Inc</button>
-      <button onClick={dec}>Dec</button>
+      <h2>Какой-то input: {search}</h2>
+      <input onChange={myFunc} type="text" />
     </div>
   );
 }

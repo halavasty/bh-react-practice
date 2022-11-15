@@ -7,3 +7,7 @@
   -moz-osx-font-smoothing: grayscale;
   font-size: 30px;
 }
+
+body {
+  padding: 100px;
+}
