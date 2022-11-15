@@ -1,11 +1,16 @@
 import React from "react";
-import { Counter } from "./components/Counter";
-import { Search } from "./components/Search";
+import { PostList } from "./components/PostList";
 
 function App() {
+  const list = [
+    { id: 1, autour: "Alex", value: "Title1" },
+    { id: 2, autour: "Vasil", value: "Title2" },
+    { id: 3, autour: "Masha", value: "Title3" },
+  ];
+
   return (
     <div className="App">
-      <Search value={100} />
+      <PostList list={list} />
     </div>
   );
 }
