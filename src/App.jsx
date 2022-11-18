@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { PostList } from "./components/PostList";
 import { PostForm } from "./components/PostForm";
-import { MyInput } from "./components/MyInput";
-import icon from "./assets/icons/favicon.jpg";
+import { MySelector } from "./components/MySelector";
 
 function App() {
   const [list, setList] = useState([
@@ -15,8 +14,19 @@ function App() {
     setList([...list, post]);
   };
 
+  const handleSelector = (e) => {
+    console.log(e.target.value);
+  };
+
   return (
     <div className="App">
+      <MySelector
+        onChange={handleSelector}
+        options={[
+          { title: "Второй", value: "second" },
+          { title: "Третий", value: "third" },
+        ]}
+      />
       <PostForm addNewPost={addNewPost} />
       <PostList list={list} />
     </div>
