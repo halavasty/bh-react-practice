@@ -6,9 +6,9 @@ export function PostList({ list }) {
     <div className="PostList">
       <h3>List</h3>
       {list.length ? (
-        list.map((item, index) => {
+        list.map((item) => {
           return (
-            <PostItem key={item.id} author={item.author} value={item.value} />
+            <PostItem key={item.id} author={item.author} value={item.text} />
           );
         })
       ) : (

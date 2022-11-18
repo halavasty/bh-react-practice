@@ -1,2 +1,9 @@
 .MyInput {
+  border: 0;
+  border: 2px solid black;
+  margin: 2px 0;
+
+  &-Input {
+    margin-left: 10px;
+  }
 }
