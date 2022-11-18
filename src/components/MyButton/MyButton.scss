@@ -1,0 +1,19 @@
+$violet: #7360f2;
+
+.MyButton {
+  border-radius: 10px;
+  border: 3px solid $violet;
+  background: transparent;
+  color: $violet;
+  padding: 10px;
+
+  &-Text {
+    font-size: 40px;
+    &:hover {
+      color: darken($violet, 20%);
+    }
+  }
+  &-Icon {
+    font-size: 40px;
+  }
+}

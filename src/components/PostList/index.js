@@ -8,7 +8,7 @@ export function PostList({ list }) {
       {list.length ? (
         list.map((item, index) => {
           return (
-            <PostItem key={item.id} autour={item.autour} value={item.value} />
+            <PostItem key={item.id} author={item.author} value={item.value} />
           );
         })
       ) : (
