@@ -1,35 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { PostList } from "./components/PostList";
 import { PostForm } from "./components/PostForm";
 import { MySelector } from "./components/MySelector";
-import { getPosts } from "./services/posts";
+import { auth, login, logout, fireStore } from "./firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { collection } from "firebase/firestore";
 
 function App() {
-  const [list, setList] = useState([]);
-  const deleteItem = (id) => {
-    console.log(id);
-    setList(list.filter((item) => item.id !== id));
-  };
-
-  useEffect(() => {
-    async function fetchUser() {
-      const posts = await getPosts(1);
-
-      setList(posts);
-    }
-    fetchUser();
-  }, []);
-
-  const addNewPost = (post) => {
-    setList([...list, post]);
-  };
-
+  const [posts, loadingPosts] = useCollectionData(
+    collection(fireStore, "post")
+  );
+  const [user, loading] = useAuthState(auth);
   const handleSelector = (e) => {
     console.log(e.target.value);
   };
 
-  return (
+  return loading ? (
+    <div>идёт загрузка</div>
+  ) : (
     <div className="App">
+      {user ? (
+        <button onClick={logout}>выйти</button>
+      ) : (
+        <button onClick={login}>авторизоваться</button>
+      )}
+
       <MySelector
         onChange={handleSelector}
         options={[
@@ -37,8 +33,8 @@ function App() {
           { title: "Третий", value: "third" },
         ]}
       />
-      <PostForm addNewPost={addNewPost} />
-      <PostList deleteItem={deleteItem} list={list} />
+      <PostForm />
+      {loadingPosts ? <div>loading..</div> : <PostList list={posts} />}
     </div>
   );
 }

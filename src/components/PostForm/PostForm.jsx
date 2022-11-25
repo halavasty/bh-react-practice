@@ -1,10 +1,15 @@
 import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { MyButton } from "../MyButton";
 import { MyInput } from "../MyInput";
+import { auth, fireStore } from "../../firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import "./PostForm.scss";
 
-export function PostForm({ addNewPost }) {
+export function PostForm() {
+  const [user] = useAuthState(auth);
   const [post, setPost] = useState({ author: "", text: "" });
+  const postCollection = collection(fireStore, "post");
   const handlerAuthor = (e) => {
     setPost({ ...post, author: e.target.value });
   };
@@ -14,7 +19,13 @@ export function PostForm({ addNewPost }) {
   const submitForm = (e) => {
     e.preventDefault();
 
-    addNewPost({ ...post, id: Date.now() });
+    addDoc(postCollection, {
+      ...post,
+      uid: user.uid,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      createAt: serverTimestamp(),
+    });
     setPost({ author: "", text: "" });
   };
 

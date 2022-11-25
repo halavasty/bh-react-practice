@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./index.scss";
 
-export function PostItem({ title, body, deleteItem }) {
+export function PostItem({ author, text, deleteItem }) {
   useEffect(() => {
     console.log("Выполнится 1 раз на стадии монтирования компонента");
     const timer = setInterval(() => console.log("каждую секунду"), 1000);
@@ -13,8 +13,8 @@ export function PostItem({ title, body, deleteItem }) {
 
   return (
     <div className="PostItem">
-      <h3>{title}</h3>
-      <p>{body}</p>
+      <h3>author - {author}</h3>
+      <p>{text}</p>
       <button onClick={deleteItem}>delete</button>
     </div>
   );
