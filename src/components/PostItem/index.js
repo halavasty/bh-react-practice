@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import "./index.scss";
 
-export function PostItem({ value, author }) {
+export function PostItem({ body, title, deleteById }) {
   return (
     <div className="PostItem">
-      <h3>author: {author} </h3>
-      <h3>{value}</h3>
+      <div className="PostItem-Content">
+        <h3>{title} </h3>
+        <p>{body}</p>
+      </div>
+      <button className="PostItem-Controller" onClick={deleteById}>
+        Удалить
+      </button>
     </div>
   );
 }

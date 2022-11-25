@@ -1,10 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { PostItem } from "../PostItem";
 
-export function PostList({ list }) {
+export function PostList({ list, deleteById }) {
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     console.log("прошла секунда");
+  //   }, 1000);
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
+
   const empty = <div>Пусто</div>;
   const listPost = list.map((item) => {
-    return <PostItem key={item.id} author={item.author} value={item.text} />;
+    return (
+      <PostItem
+        deleteById={() => deleteById(item.id)}
+        key={item.id}
+        title={item.title}
+        body={item.body}
+      />
+    );
   });
 
   return (

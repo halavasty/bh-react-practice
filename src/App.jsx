@@ -1,14 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 import { PostList } from "./components/PostList";
 import { PostForm } from "./components/PostForm";
 import { MySelector } from "./components/MySelector";
 
 function App() {
   const [list, setList] = useState([
-    { id: 1, author: "Alex", text: "Title1" },
-    { id: 2, author: "Vasil", text: "Title2" },
-    { id: 3, author: "Masha", text: "Title3" },
+    { id: 1, title: "Alex", body: "Title1" },
+    { id: 2, title: "Vasil", body: "Title2" },
+    { id: 3, title: "Masha", body: "Title3" },
   ]);
+
+  const deleteById = (id) => {
+    console.log(id);
+    const newList = list.filter(function (item) {
+      return item.id !== id;
+    });
+    setList(newList);
+  };
+
+  const getUsers = function () {
+    return fetch("https://jsonplaceholder.typicode.com/posts/?userId=1");
+  };
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers();
+      if (!response.ok) {
+        throw new Error(`status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data);
+      // setList(data);
+    } catch (error) {
+      console.log("Opps!", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const addNewPost = (post) => {
     setList([...list, post]);
@@ -28,7 +60,11 @@ function App() {
         ]}
       />
       <PostForm addNewPost={addNewPost} />
-      <PostList list={list} />
+      {list.length ? (
+        <PostList deleteById={deleteById} list={list} />
+      ) : (
+        <div>Ничего нету</div>
+      )}
     </div>
   );
 }

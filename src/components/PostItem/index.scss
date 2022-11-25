@@ -1,5 +1,10 @@
-.Post {
-  &Item {
-    background-color: red;
+.PostItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: red;
+
+  &-Content {
+    color: white;
   }
 }
