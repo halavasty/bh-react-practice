@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 import { PostList } from "./components/PostList";
 import { PostForm } from "./components/PostForm";
 import { MySelector } from "./components/MySelector";
 
+import { auth, login, logout } from "./firebase";
+
 function App() {
+  const [user, isLoginUser] = useAuthState(auth);
+  const [isLoading, setIsLoading] = useState(false);
   const [list, setList] = useState([
     { id: 1, title: "Alex", body: "Title1" },
     { id: 2, title: "Vasil", body: "Title2" },
@@ -21,18 +25,20 @@ function App() {
   };
 
   const getUsers = function () {
+    setIsLoading(true);
     return fetch("https://jsonplaceholder.typicode.com/posts/?userId=1");
   };
   const fetchUsers = async () => {
     try {
       const response = await getUsers();
+      setIsLoading(false);
       if (!response.ok) {
         throw new Error(`status: ${response.status}`);
       }
 
       const data = await response.json();
       console.log(data);
-      // setList(data);
+      setList(data);
     } catch (error) {
       console.log("Opps!", error);
     }
@@ -50,8 +56,14 @@ function App() {
     console.log(e.target.value);
   };
 
-  return (
+  return !isLoginUser ? (
     <div className="App">
+      {user ? (
+        <button onClick={logout}>Выйти</button>
+      ) : (
+        <button onClick={login}>авторизоваться</button>
+      )}
+
       <MySelector
         onChange={handleSelector}
         options={[
@@ -60,12 +72,16 @@ function App() {
         ]}
       />
       <PostForm addNewPost={addNewPost} />
-      {list.length ? (
+      {isLoading ? (
+        <div>идёт загрузка</div>
+      ) : list.length ? (
         <PostList deleteById={deleteById} list={list} />
       ) : (
         <div>Ничего нету</div>
       )}
     </div>
+  ) : (
+    <div>loading...</div>
   );
 }
 

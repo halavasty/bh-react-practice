@@ -1,32 +1,35 @@
 import React, { useEffect } from "react";
-import { PostItem } from "../PostItem";
+import { collection } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
-export function PostList({ list, deleteById }) {
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     console.log("прошла секунда");
-  //   }, 1000);
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
+import { PostItem } from "../PostItem";
+import { firestore } from "../../firebase";
+
+export function PostList({ deleteById }) {
+  const [posts, loadingPosts] = useCollectionData(
+    collection(firestore, "post")
+  );
 
   const empty = <div>Пусто</div>;
-  const listPost = list.map((item) => {
-    return (
-      <PostItem
-        deleteById={() => deleteById(item.id)}
-        key={item.id}
-        title={item.title}
-        body={item.body}
-      />
-    );
-  });
+  const listPost = posts
+    ? posts.map((item) => {
+        return (
+          <PostItem
+            deleteById={() => deleteById(item.id)}
+            key={item.createAt}
+            title={item.title}
+            body={item.body}
+          />
+        );
+      })
+    : null;
 
-  return (
+  return loadingPosts ? (
+    <div>Загружается..</div>
+  ) : (
     <div className="PostList">
       <h3>List</h3>
-      {list.length ? listPost : empty}
+      {posts.length ? listPost : empty}
     </div>
   );
 }
