@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { PostItem } from "../PostItem";
 
-export function PostList({ list }) {
+export function PostList({ list, deleteItem }) {
   const empty = <div>Пусто</div>;
   const listPost = list.map((item) => {
-    return <PostItem key={item.id} author={item.author} value={item.text} />;
+    return (
+      <PostItem
+        deleteItem={() => deleteItem(item.id)}
+        key={item.id}
+        title={item.title}
+        body={item.body}
+      />
+    );
   });
 
   return (

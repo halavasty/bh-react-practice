@@ -1,14 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PostList } from "./components/PostList";
 import { PostForm } from "./components/PostForm";
 import { MySelector } from "./components/MySelector";
+import { getPosts } from "./services/posts";
 
 function App() {
-  const [list, setList] = useState([
-    { id: 1, author: "Alex", text: "Title1" },
-    { id: 2, author: "Vasil", text: "Title2" },
-    { id: 3, author: "Masha", text: "Title3" },
-  ]);
+  const [list, setList] = useState([]);
+  const deleteItem = (id) => {
+    console.log(id);
+    setList(list.filter((item) => item.id !== id));
+  };
+
+  useEffect(() => {
+    async function fetchUser() {
+      const posts = await getPosts(1);
+
+      setList(posts);
+    }
+    fetchUser();
+  }, []);
 
   const addNewPost = (post) => {
     setList([...list, post]);
@@ -28,7 +38,7 @@ function App() {
         ]}
       />
       <PostForm addNewPost={addNewPost} />
-      <PostList list={list} />
+      <PostList deleteItem={deleteItem} list={list} />
     </div>
   );
 }
